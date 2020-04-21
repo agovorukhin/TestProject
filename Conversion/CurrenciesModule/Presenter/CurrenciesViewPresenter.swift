@@ -51,10 +51,8 @@ class CurrenciesPresenter: CurrenciesPresenterProtocol {
                 case .success(let currencies):
                     self.currencies.accept(currencies)
                 case .failure(let error):
-                    DispatchQueue.main.async {
-                        self.view?.activityIndicator.stopAnimating()
-                        self.view?.showAlert(title: "Ошибка", msg: error.localizedDescription)
-                    }
+                    self.view?.activityIndicator.stopAnimating()
+                    self.view?.showAlert(title: "Ошибка", msg: error.localizedDescription)
                 }
             }   
         }

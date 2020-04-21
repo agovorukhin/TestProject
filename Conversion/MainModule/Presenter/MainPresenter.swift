@@ -42,18 +42,6 @@ class MainPresenter: MainViewPresenterProtocol {
                 DispatchQueue.main.async {
                     self?.view?.enabledTextFields(change)
                 }
-            },
-            converting.transferFrom
-                .compactMap { $0 }
-                .bind { [weak self] currency in
-                    guard let symbol = currency.currencySymbol else { return }
-                    self?.view?.setCurrencySymbol(button: .fromButton, symbol: symbol)
-            },
-            converting.transferTo
-                .compactMap { $0 }
-                .bind { [weak self] currency in
-                    guard let symbol = currency.currencySymbol else { return }
-                    self?.view?.setCurrencySymbol(button: .toButton, symbol: symbol)
             }
         ])
     }
@@ -66,7 +54,7 @@ class MainPresenter: MainViewPresenterProtocol {
             case .toButton:
                 self?.converting.transferTo.accept(curr)
             }
-            self?.view?.setSelectedCurrency(selectedButton: button, currencyName: curr.id ?? "")
+            self?.view?.updateCurrency(selectedButton: button, currency: curr)
         })
     }
     

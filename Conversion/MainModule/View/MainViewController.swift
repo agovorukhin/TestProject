@@ -20,10 +20,9 @@ enum SelectedButton: Int {
 
 protocol MainViewProtocol: class {
     func showAlert(title: String, msg: String)
-    func setSelectedCurrency(selectedButton: SelectedButton, currencyName: String)
+    func updateCurrency(selectedButton: SelectedButton, currency: Currency)
     func enabledTextFields(_ isEnabled: Bool)
     func setConvertingValue(button: SelectedButton, value: Double)
-    func setCurrencySymbol(button: SelectedButton, symbol: String)
 }
 
 class MainViewController: UIViewController {
@@ -70,12 +69,16 @@ extension MainViewController: MainViewProtocol {
         present(alert, animated: true)
     }
     
-    func setSelectedCurrency(selectedButton: SelectedButton, currencyName: String) {
+    func updateCurrency(selectedButton: SelectedButton, currency: Currency) {
+        let symbol = currency.currencySymbol ?? ""
+        let id = currency.id ?? ""
         switch selectedButton {
         case .fromButton:
-            fromCurrency.setTitle(currencyName, for: .normal)
+            fromTextField.updateLabel(symbol)
+            fromCurrency.setTitle(id, for: .normal)
         case .toButton:
-            toCurrency.setTitle(currencyName, for: .normal)
+            toTextField.updateLabel(symbol)
+            toCurrency.setTitle(id, for: .normal)
         }
     }
     
@@ -85,15 +88,6 @@ extension MainViewController: MainViewProtocol {
             fromTextField.updateLabel(value)
         case .toButton:
             toTextField.updateLabel(value)
-        }
-    }
-    
-    func setCurrencySymbol(button: SelectedButton, symbol: String) {
-        switch button {
-        case .fromButton:
-            fromTextField.updateLabel(symbol)
-        case .toButton:
-            toTextField.updateLabel(symbol)
         }
     }
 }
